@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+/* index.css ou App.css */
+input[type="text"] {
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 10px; /* Para adicionar um pouco de espaço abaixo do input */
+}
