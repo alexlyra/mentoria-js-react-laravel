@@ -2,22 +2,36 @@ import React from 'react';
 
 interface TaskFormProps {
   currentTask: string;
-  setCurrentTask: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentTask: (task: string) => void;
   addTask: () => void;
+  error: string | null;
+  setError: (error: string | null) => void; // Adicionado
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ currentTask, setCurrentTask, addTask }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ currentTask, setCurrentTask, addTask, error, setError }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentTask(e.target.value);
+    if (error) {
+      setError(null); // Limpa a mensagem de erro ao digitar
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    addTask();
+  };
+
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
-        id="taskInput"
-        name="taskInput"
         value={currentTask}
-        onChange={(e) => setCurrentTask(e.target.value)}
+        onChange={handleChange}
+        style={{ borderColor: error ? 'red' : 'black' }}
       />
-      <button onClick={addTask}>Add Task</button>
-    </div>
+      <button type="submit">Add Task</button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </form>
   );
 };
 
