@@ -1,21 +1,17 @@
-import { revalidatePath } from "next/cache"
-import prisma from "@/lib/prisma";
+"use client"
+
+import { createProductAction } from "@/actions/create.product.action";
+import { toast } from "react-toastify";
 
 export function AddProductForm() {
+
   const action = async (data: FormData) => {
-    "use server"
-
-    const { name, amount, description } = Object.fromEntries(data)
-
-    await prisma.product.create({
-      data: {
-        amount: Number(amount),
-        name: name as string,
-        description: description as string
-      }
-    })
-
-    revalidatePath("/")
+    const response = await createProductAction(data)
+    if (response.ok) {
+      toast.success(response.toast)
+    } else {
+      toast.error(response.toast)
+    }
   }
 
   return (
